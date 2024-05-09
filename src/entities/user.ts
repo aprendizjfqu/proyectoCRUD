@@ -1,18 +1,33 @@
-import { create } from "domain";
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import {
+    Column, Entity, PrimaryGeneratedColumn, CreateDateColumn,
+    UpdateDateColumn, BaseEntity,
+    IntegerType
+} from "typeorm";
 
 @Entity()
 
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number
 
     @Column()
-    identificación: number
+    identification: number
 
     @Column()
-    activo: boolean
+    nombre: string
+
+    @Column()
+    apellidos: string
+
+
+    @Column({
+        default: true
+    })
+
+    @Column()
+    comment: string
+
 
     @CreateDateColumn()
     createAt: Date
