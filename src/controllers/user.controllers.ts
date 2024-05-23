@@ -2,25 +2,21 @@ import { Request, Response } from 'express'
 import { User } from '../entities/user'
 
 interface userBody {
-    nombre: string
-    apellidos: string
-    identification: number
+    personaId: number
     comparendo: number
-    comment: string
+    mensaje: string
 }
 
 export const createUser = async (req: Request<unknown, unknown, userBody>, res: Response) => {
 
     try {
-        const { identification, comment, apellidos, nombre } = req.body
+        const { personaId, mensaje } = req.body
         //throw new Error('Lo sentimos ocurrió un error')
 
         const user = new User()
 
-        user.identification = identification
-        user.nombre = nombre
-        user.apellidos = apellidos
-        user.comment = comment
+        user.personaId = personaId
+        user.mensaje = mensaje
 
         await user.save()
 
@@ -53,6 +49,7 @@ export const updateUsers = async (req: Request, res: Response) => {
     const { id } = req.params
 
     try {
+        console.log(id)
         const user = await User.findOneBy({ id: parseInt(id) })
         if (!user) return res.status(404).json({ message: "el usuario no exite" })
 
@@ -63,6 +60,21 @@ export const updateUsers = async (req: Request, res: Response) => {
     catch (error) {
         if (error) {
             return res.status(500).json({ message: error })
+        }
+    }
+}
+
+export const getUsersByPersonaId = async (req: Request, res: Response) => {
+
+    try {
+        const { personaId } = req.params
+        const users = await User.findBy({ personaId: parseInt(personaId) })
+        // return res.json([users])
+        return res.json(users)
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message })
         }
     }
 }
@@ -81,10 +93,10 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
     catch (error) {
 
-        if (error instanceof Error){
-            return res.status(500).json({message: error.message})
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message })
         }
-        
+
 
     }
 }

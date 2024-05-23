@@ -12,22 +12,10 @@ export class User extends BaseEntity {
     id: number
 
     @Column()
-    identification: number
+    personaId: number
 
     @Column()
-    nombre: string
-
-    @Column()
-    apellidos: string
-
-
-    @Column({
-        default: true
-    })
-
-    @Column()
-    comment: string
-
+    mensaje: string
 
     @CreateDateColumn()
     createAt: Date
